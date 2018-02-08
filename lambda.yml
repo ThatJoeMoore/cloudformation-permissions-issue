@@ -1,0 +1,22 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Prefix:
+    Type: String
+Resources:
+  Lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: >
+          exports.handler = function(event, ctx, callback) {
+            console.log('Hello, world!');
+            callback(null, 'Hello, World!');
+          }
+      Handler: index.handler
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${Prefix}-lambda-role"
+      Runtime: nodejs6.10
+
+Outputs:
+  LambdaArn:
+    Value: !GetAtt Lambda.Arn
