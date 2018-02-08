@@ -64,6 +64,29 @@ aws lambda list-tags --resource "$lambda_arn"
 echo "Lambda stack messages:"
 aws cloudformation describe-stack-events --stack-name "$lambda_stack" --max-items 5 --query "StackEvents[].ResourceStatusReason"
 
+echo "Tagging lambda with direct API call using role"
+
+
+role_file="/tmp/$prefix-session.json"
+
+aws sts assume-role --role-arn "$cfn_role" --role-session-name "$prefix-run-test" --duration-seconds 900 > "$role_file"
+
+role_key_id=`jq .Credentials.AccessKeyId "$role_file" | sed -e 's/^"//' -e 's/"$//'`
+role_key=`jq .Credentials.SecretAccessKey "$role_file" | sed -e 's/^"//' -e 's/"$//'`
+role_token=`jq .Credentials.SessionToken "$role_file" | sed -e 's/^"//' -e 's/"$//'`
+
+rm $role_file
+
+AWS_ACCESS_KEY_ID=$role_key_id AWS_SECRET_ACCESS_KEY=$role_key AWS_SESSION_TOKEN=$role_token \
+    aws lambda tag-resource --resource "$lambda_arn" --tags tagged=with-api
+
+AWS_ACCESS_KEY_ID=$role_key_id AWS_SECRET_ACCESS_KEY=$role_key AWS_SESSION_TOKEN=$role_token \
+    aws lambda untag-resource --resource "$lambda_arn" --tag-keys foo
+
+echo "Lambda Tags after API calls"
+
+aws lambda list-tags --resource "$lambda_arn"
+
 echo "Cleaning Up Stacks"
 
 if [[ $* == *--dont-cleanup-lambda* ]]; then

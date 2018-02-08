@@ -2,7 +2,7 @@
 
 This illustrates an issue with Lambda permissions. 
 
-To see the issue, run `./run-test.sh`.  This will create the necessary stacks and show the result.
+To see the issue, run `./run-test.sh my-test-prefix`.  This will create the necessary stacks and show the result.
 
 First, it creates an IAM stack with the necessary permissions.
 Then, it creates a stack with a lambda, with the tag foo=bar

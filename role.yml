@@ -35,6 +35,7 @@ Resources:
               Action:
                 - 'lambda:TagResource'
                 - 'lambda:UntagResource'
+                # - 'lambda:UntagResource*'
                 - 'lambda:ListTags'
               Resource:
                 - '*'
