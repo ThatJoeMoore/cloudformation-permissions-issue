@@ -7,7 +7,7 @@ To see the issue, run `./run-test.sh my-test-prefix`.  This will create the nece
 First, it creates an IAM stack with the necessary permissions.
 Then, it creates a stack with a lambda, with the tag foo=bar
 
-We then output the labmda's tags and any messages from the stack creation
+We then output the lambda's tags and any messages from the stack creation
 
 Then, we update the stack with a new tag, bar=baz
 
