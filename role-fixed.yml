@@ -34,7 +34,7 @@ Resources:
             - Effect: Allow
               Action:
                 - 'lambda:TagResource'
-                - 'lambda:UntagResource'
+                - 'lambda:UntagResource*'
                 - 'lambda:ListTags'
               Resource:
                 - '*'
